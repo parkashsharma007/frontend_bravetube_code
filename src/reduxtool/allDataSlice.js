@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchAllData = createAsyncThunk("allData/fetch", async () => {
-  const res = await axios.get("https://backend11-ar3o.onrender.com/api/all");
+  const res = await axios.get("https://backend-232.onrender.com/api/all");
   console.log(res)
   return res.data
 });
