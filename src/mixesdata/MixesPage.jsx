@@ -63,18 +63,17 @@ const MixesPage = () => {
     dispatch(fetchAllData());
   }, [dispatch]);
 
-  if (loading) return <p className="p-4 text-lg">Loading...</p>;
+  if (loading) return <p className="p-4 text-sm sm:text-base md:text-lg text-center">Loading...</p>;
 
-  if (error) return <p className="p-4 text-lg text-red-500">Error loading data</p>;
+  if (error) return <p className="p-4 text-sm sm:text-base md:text-lg text-red-500 text-center">Error loading data</p>;
 
-  // ⭐ FILTER DATA WHERE type = "mixes"
   const mixesData = allData?.filter((item) => item.type === "mixes") || [];
 
   if (mixesData.length === 0)
-    return <p className="p-4 text-lg">No Mixes found</p>;
+    return <p className="p-4 text-sm sm:text-base md:text-lg text-center">No Mixes found</p>;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 p-2 sm:p-4">
       {mixesData.map((video, index) => (
         <div
           key={index}
@@ -83,7 +82,7 @@ const MixesPage = () => {
         >
           {activeVideo === video.id ? (
             <iframe
-              className="w-full h-48"
+              className="w-full h-40 sm:h-48 aspect-video"
               src={`https://www.youtube.com/embed/${video.id}?autoplay=1`}
               title={video.title}
               allow="autoplay"
@@ -93,18 +92,18 @@ const MixesPage = () => {
             <img
               src={video.thumbnail}
               alt={video.title}
-              className="w-full h-48 object-cover"
+              className="w-full h-40 sm:h-48 object-cover"
             />
           )}
 
-          <div className="p-4">
-            <h2 className="text-lg font-semibold hover:text-red-600">
+          <div className="p-2 sm:p-3 md:p-4">
+            <h2 className="text-sm sm:text-base md:text-lg font-semibold hover:text-red-600 line-clamp-2">
               {video.title}
             </h2>
 
-            <p className="text-sm text-gray-600 mt-1">{video.channelTitle}</p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-1 truncate">{video.channelTitle}</p>
 
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">
               {Number(video.views).toLocaleString()} views
             </p>
           </div>

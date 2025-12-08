@@ -15,18 +15,12 @@ const ActionThrillersPage = () => {
     dispatch(fetchAllData());
   }, [dispatch]);
 
-  if (loading) return <p className="p-6 text-lg">Loading...</p>;
-  if (error) return <p className="p-6 text-red-500">{error}</p>;
+  if (loading) return <p className="p-4 sm:p-6 text-sm sm:text-base md:text-lg text-center">Loading...</p>;
+  if (error) return <p className="p-4 sm:p-6 text-sm sm:text-base text-red-500 text-center">{error}</p>;
 
-  // ⭐ Filter climbing data
   const climbingData = allData?.filter((v) => v.type === "climbing") || [];
-
-  // ⭐ Filter mixes data
   const mixesData = allData?.filter((v) => v.type === "mixes") || [];
-
-  // ⭐ Alternating data: climbing → mixes → climbing → mixes
   const maxLength = Math.max(climbingData.length, mixesData.length);
-
   const ActionThrillersData = [];
 
   for (let i = 0; i < maxLength; i++) {
@@ -35,10 +29,10 @@ const ActionThrillersPage = () => {
   }
 
   if (ActionThrillersData.length === 0)
-    return <p className="p-6 text-lg">No Action Thriller videos found</p>;
+    return <p className="p-4 sm:p-6 text-sm sm:text-base md:text-lg text-center">No Action Thriller videos found</p>;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 p-2 sm:p-4 md:p-6">
       {ActionThrillersData.map((video) => (
         <div
           key={video.id}
@@ -49,7 +43,7 @@ const ActionThrillersPage = () => {
             <div className="aspect-video w-full">
               <iframe
                 className="w-full h-full"
-                src={`https://www.youtube.com/embed/${video.videoId}?autoplay=1`}
+                src={`https://www.youtube.com/embed/${video.videoId || video.id}?autoplay=1`}
                 allow="autoplay"
                 allowFullScreen
                 title={video.title}
@@ -65,10 +59,10 @@ const ActionThrillersPage = () => {
             </div>
           )}
 
-          <div className="p-4">
-            <h2 className="font-semibold text-lg">{video.title}</h2>
-            <p className="text-sm text-gray-600">{video.channelTitle}</p>
-            <p className="text-sm text-gray-500">{video.views} views</p>
+          <div className="p-2 sm:p-3 md:p-4">
+            <h2 className="font-semibold text-sm sm:text-base md:text-lg line-clamp-2">{video.title}</h2>
+            <p className="text-xs sm:text-sm text-gray-600 truncate mt-1">{video.channelTitle}</p>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">{video.views} views</p>
           </div>
         </div>
       ))}

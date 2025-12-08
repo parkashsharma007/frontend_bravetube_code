@@ -30,17 +30,18 @@ import DislikedVideos from "./components/DislikedVideos";
 
 const App = () => {
   const [search, setSearch] = useState("");
-  const [chatOpen, setChatOpen] = useState(false); 
+  const [chatOpen, setChatOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <BrowserRouter>
       <div className="bg-gray-100 min-h-screen">
 
-        <Header setSearch={setSearch} />
+        <Header setSearch={setSearch} setSidebarOpen={setSidebarOpen} />
 
         <CategoryBar />
 
-        <Sidebar />
+        <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
         
         <ChatData chatOpen={chatOpen} setChatOpen={setChatOpen} />
@@ -48,8 +49,9 @@ const App = () => {
        
         <div
           className={`
-            mt-3 p-6 ml-60 transition-all duration-300
-            ${chatOpen ? "mr-80" : "mr-0"}    // PAGE PUSH FIX
+            mt-3 p-3 sm:p-4 md:p-6 transition-all duration-300
+            md:ml-60
+            ${chatOpen ? "mr-0 md:mr-80" : "mr-0"}
           `}
         >
           <Routes>

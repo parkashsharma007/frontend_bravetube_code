@@ -20,7 +20,8 @@ const CategoryBar = () => {
   return (
     <div
       className="
-        w-[100] overflow-x-auto ml-56  flex gap-4 px-4 py-4 bg-white sticky top-12 z-20 scrollbar-hide" >
+        w-full overflow-x-auto md:ml-56 flex gap-2 sm:gap-3 md:gap-4 px-2 sm:px-4 py-2 sm:py-3 md:py-4 bg-white sticky top-12 sm:top-14 z-20 scrollbar-hide"
+    >
       {categories.map((cat) => {
         const isActive =
           location.pathname === cat.path ||
@@ -31,12 +32,12 @@ const CategoryBar = () => {
             key={cat.name}
             to={cat.path}
             className={`
-              px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap
+              px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap
               transition
               ${
                 isActive
                   ? "bg-black text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
+                  : "bg-gray-200 hover:bg-gray-300 text-gray-800"
               }
             `}
           >

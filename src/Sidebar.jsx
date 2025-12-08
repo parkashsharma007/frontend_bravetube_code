@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, setIsOpen }) => {
+  const location = useLocation();
   const menu = [
     { name: "Home", path: "/", icon: "🏠" },
     { name: "Shorts", path: "/shorts", icon: "🎬" },
@@ -13,18 +14,33 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="hidden md:block w-56 bg-white border-r h-screen fixed top-14 left-0 overflow-y-auto">
-      {menu.map((item) => (
-        <Link
-          key={item.name}
-          to={item.path}
-          className="flex items-center gap-4 px-3 py-2 rounded-lg hover:bg-gray-100"
-        >
-          <span className="text-xl">{item.icon}</span>
-          <span>{item.name}</span>
-        </Link>
-      ))}
-    </aside>
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      <aside
+        className={`fixed top-14 left-0 h-[calc(100vh-3.5rem)] bg-white border-r overflow-y-auto z-40 transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 w-56`}
+      >
+        {menu.map((item) => (
+          <Link
+            key={item.name}
+            to={item.path}
+            onClick={() => setIsOpen && setIsOpen(false)}
+            className={`flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg hover:bg-gray-100 transition-colors ${
+              location.pathname === item.path ? "bg-gray-100 font-semibold" : ""
+            }`}
+          >
+            <span className="text-lg sm:text-xl">{item.icon}</span>
+            <span className="text-sm sm:text-base">{item.name}</span>
+          </Link>
+        ))}
+      </aside>
+    </>
   );
 };
 

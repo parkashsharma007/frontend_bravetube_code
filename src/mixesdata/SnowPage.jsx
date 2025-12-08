@@ -15,20 +15,17 @@ const SnowPage = () => {
     dispatch(fetchAllData());
   }, [dispatch]);
 
-  if (loading) return <p className="p-4 text-lg">Loading...</p>;
-  if (error) return <p className="p-4 text-lg text-red-500">{error}</p>;
+  if (loading) return <p className="p-4 text-sm sm:text-base md:text-lg text-center">Loading...</p>;
+  if (error) return <p className="p-4 text-sm sm:text-base md:text-lg text-red-500 text-center">{error}</p>;
 
-  // ⭐ SnowPage ke liye mixes walo me se 9 videos le lo
   const MixesData = allData?.filter((v) => v.type === "mixes") || [];
-
-  // ⭐ Only 9 videos (first 9)
   const SnowData = MixesData.slice(0, 9);
 
   if (SnowData.length === 0)
-    return <p className="p-4 text-lg">No videos found</p>;
+    return <p className="p-4 text-sm sm:text-base md:text-lg text-center">No videos found</p>;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 p-2 sm:p-4 md:p-6">
       {SnowData.map((video) => (
         <div
           key={video.id}
@@ -55,10 +52,10 @@ const SnowPage = () => {
             </div>
           )}
 
-          <div className="p-4">
-            <h2 className="font-semibold text-lg">{video.title}</h2>
-            <p className="text-sm text-gray-600">{video.channelTitle}</p>
-            <p className="text-sm text-gray-500">{video.views} views</p>
+          <div className="p-2 sm:p-3 md:p-4">
+            <h2 className="font-semibold text-sm sm:text-base md:text-lg line-clamp-2">{video.title}</h2>
+            <p className="text-xs sm:text-sm text-gray-600 truncate mt-1">{video.channelTitle}</p>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">{video.views} views</p>
           </div>
         </div>
       ))}
