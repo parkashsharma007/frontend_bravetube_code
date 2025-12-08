@@ -20,7 +20,7 @@ const CategoryBar = () => {
   return (
     <div
       className="
-        w-full overflow-x-auto md:ml-56 flex gap-2 sm:gap-3 md:gap-4 px-2 sm:px-4 py-2 sm:py-3 md:py-4 bg-white sticky top-12 sm:top-14 z-20 scrollbar-hide"
+        w-full overflow-x-auto md:ml-56 flex gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 px-1.5 sm:px-2 md:px-4 py-1.5 sm:py-2 md:py-3 lg:py-4 bg-white sticky top-[56px] sm:top-[60px] md:top-14 z-20 scrollbar-hide"
     >
       {categories.map((cat) => {
         const isActive =
@@ -32,8 +32,8 @@ const CategoryBar = () => {
             key={cat.name}
             to={cat.path}
             className={`
-              px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap
-              transition
+              px-2 sm:px-2.5 md:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg text-xs sm:text-xs md:text-sm font-medium whitespace-nowrap
+              transition flex-shrink-0
               ${
                 isActive
                   ? "bg-black text-white"

@@ -22,7 +22,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         />
       )}
       <aside
-        className={`fixed top-14 left-0 h-[calc(100vh-3.5rem)] bg-white border-r overflow-y-auto z-40 transition-transform duration-300 ${
+        className={`fixed top-[56px] sm:top-[60px] md:top-14 left-0 h-[calc(100vh-56px)] sm:h-[calc(100vh-60px)] md:h-[calc(100vh-3.5rem)] bg-white border-r overflow-y-auto z-40 transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 w-56`}
       >

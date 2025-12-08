@@ -17,6 +17,7 @@ const Center = ({ search }) => {
   const [subs, setSubs] = useState([]);
   const [watchLater, setWatchLater] = useState([]);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   useEffect(() => {
     dispatch(fetchAllData());
@@ -30,6 +31,12 @@ const Center = ({ search }) => {
   useEffect(() => {
     setSubs(JSON.parse(localStorage.getItem("subscriptions")) || []);
     setWatchLater(JSON.parse(localStorage.getItem("watchLater")) || []);
+    
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // ⭐ FILTER MULTIPLE TYPES
@@ -105,7 +112,7 @@ const Center = ({ search }) => {
 
   /* ========= CARD VIEW ========= */
   const cardView = (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 p-2 sm:p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6 p-2 sm:p-3 md:p-4">
       {filteredData.map((video) => {
         const subscribed = subs.includes(video.channelTitle);
         const addedLater = watchLater.some((v) => v.id === video.id);
@@ -113,12 +120,12 @@ const Center = ({ search }) => {
         return (
           <div
             key={video.id}
-            className="bg-white shadow-md rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300"
+            className="bg-white shadow-md rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300 w-full"
           >
-            <div onClick={() => handlePlay(video)} className="relative">
+            <div onClick={() => handlePlay(video)} className="relative w-full">
               {activeVideo === video.id ? (
                 <iframe
-                  className="w-full h-40 sm:h-48 aspect-video"
+                  className="w-full h-36 sm:h-44 md:h-48 lg:h-52 aspect-video"
                   src={`https://www.youtube.com/embed/${video.id}?autoplay=1`}
                   allow="autoplay"
                   title={video.title}
@@ -127,45 +134,60 @@ const Center = ({ search }) => {
                 <img
                   src={video.thumbnail}
                   alt={video.title}
-                  className="w-full h-40 sm:h-48 object-cover cursor-pointer"
+                  className="w-full h-36 sm:h-44 md:h-48 lg:h-52 object-cover cursor-pointer"
+                  loading="lazy"
                 />
               )}
             </div>
 
-            <div className="p-2 sm:p-3 md:p-4">
-              <h2 className="text-sm sm:text-base md:text-lg font-semibold line-clamp-2 mb-1">{video.title}</h2>
-              <p className="text-xs sm:text-sm text-gray-600 truncate">{video.channelTitle}</p>
-              <p className="text-xs sm:text-sm text-gray-500 mb-2">{video.views} views</p>
+            <div className="p-2 sm:p-2.5 md:p-3 lg:p-4">
+              <h2 className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold line-clamp-2 mb-1 leading-tight">{video.title}</h2>
+              <p className="text-xs text-gray-600 truncate mb-0.5">{video.channelTitle}</p>
+              <p className="text-xs text-gray-500 mb-2">{video.views} views</p>
 
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
                 <button
-                  onClick={() => handleSubscribe(video.channelTitle)}
-                  className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded ${
-                    subscribed ? "bg-gray-300" : "bg-red-600 text-white"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSubscribe(video.channelTitle);
+                  }}
+                  className={`px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 text-xs sm:text-xs md:text-sm rounded font-medium ${
+                    subscribed ? "bg-gray-300 text-gray-700" : "bg-red-600 text-white"
                   }`}
                 >
-                  {subscribed ? "Subscribed" : "Subscribe"}
+                  {subscribed ? "✓ Sub" : "Subscribe"}
                 </button>
 
                 <button
-                  onClick={() => handleWatchLater(video)}
-                  className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded bg-gray-200"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleWatchLater(video);
+                  }}
+                  className="px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 text-xs sm:text-xs md:text-sm rounded bg-gray-200 font-medium"
                 >
-                  {addedLater ? "Added" : "Watch Later"}
+                  {addedLater ? "✓ Added" : "Watch Later"}
                 </button>
 
                 <button
-                  onClick={() => dispatch(likeVideo(video))}
-                  className="px-2 sm:px-3 py-1 text-xs sm:text-sm bg-blue-500 text-white rounded"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    dispatch(likeVideo(video));
+                  }}
+                  className="px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 text-xs sm:text-xs md:text-sm bg-blue-500 text-white rounded font-medium flex items-center justify-center gap-0.5 sm:gap-1"
                 >
-                  👍 Like
+                  <span>👍</span>
+                  <span>Like</span>
                 </button>
 
                 <button
-                  onClick={() => dispatch(dislikeVideo(video))}
-                  className="px-2 sm:px-3 py-1 text-xs sm:text-sm bg-gray-500 text-white rounded"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    dispatch(dislikeVideo(video));
+                  }}
+                  className="px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 text-xs sm:text-xs md:text-sm bg-gray-500 text-white rounded font-medium flex items-center justify-center gap-0.5 sm:gap-1"
                 >
-                  👎 Dislike
+                  <span>👎</span>
+                  <span>Dislike</span>
                 </button>
               </div>
             </div>
@@ -177,7 +199,7 @@ const Center = ({ search }) => {
 
   /* ========= TABLE VIEW ========= */
   const tableView = (
-    <div className="p-2 sm:p-4 overflow-x-auto">
+    <div className="p-2 sm:p-4 overflow-x-auto w-full">
       <div className="min-w-full inline-block align-middle">
         <table className="w-full border text-xs sm:text-sm">
           <thead>
@@ -201,21 +223,24 @@ const Center = ({ search }) => {
                     <img
                       src={video.thumbnail}
                       alt={video.title}
-                      className="w-20 sm:w-32 md:w-40 h-auto rounded cursor-pointer"
+                      className="w-16 sm:w-24 md:w-32 lg:w-40 h-auto rounded cursor-pointer"
                       onClick={() => handlePlay(video)}
                     />
                   </td>
 
-                  <td className="p-1 sm:p-2 max-w-xs truncate">{video.title}</td>
-                  <td className="p-1 sm:p-2 hidden sm:table-cell max-w-xs truncate">{video.channelTitle}</td>
-                  <td className="p-1 sm:p-2 hidden md:table-cell">{video.views}</td>
+                  <td className="p-1 sm:p-2 max-w-[100px] sm:max-w-xs truncate text-xs">{video.title}</td>
+                  <td className="p-1 sm:p-2 hidden sm:table-cell max-w-[80px] md:max-w-xs truncate text-xs">{video.channelTitle}</td>
+                  <td className="p-1 sm:p-2 hidden md:table-cell text-xs">{video.views}</td>
 
                   <td className="p-1 sm:p-2">
-                    <div className="flex flex-col gap-1 sm:gap-2">
-                      <div className="flex gap-1 sm:gap-2">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex gap-1">
                         <button
-                          onClick={() => handleSubscribe(video.channelTitle)}
-                          className={`px-2 sm:px-3 py-1 text-xs rounded ${
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSubscribe(video.channelTitle);
+                          }}
+                          className={`px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 text-xs rounded ${
                             subscribed ? "bg-gray-300" : "bg-blue-600 text-white"
                           }`}
                         >
@@ -223,24 +248,33 @@ const Center = ({ search }) => {
                         </button>
 
                         <button
-                          onClick={() => handleWatchLater(video)}
-                          className="px-2 sm:px-3 py-1 text-xs rounded bg-green-500 text-white"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleWatchLater(video);
+                          }}
+                          className="px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 text-xs rounded bg-green-500 text-white"
                         >
                           {addedLater ? "Added" : "Later"}
                         </button>
                       </div>
-                      <div className="flex gap-1 sm:gap-2">
+                      <div className="flex gap-1">
                         <button
-                          onClick={() => dispatch(likeVideo(video))}
-                          className="px-2 sm:px-3 py-1 text-xs rounded bg-blue-500 text-white"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            dispatch(likeVideo(video));
+                          }}
+                          className="px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 text-xs rounded bg-blue-500 text-white"
                         >
-                          👍 Like
+                          👍
                         </button>
                         <button
-                          onClick={() => dispatch(dislikeVideo(video))}
-                          className="px-2 sm:px-3 py-1 text-xs rounded bg-gray-500 text-white"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            dispatch(dislikeVideo(video));
+                          }}
+                          className="px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 text-xs rounded bg-gray-500 text-white"
                         >
-                          👎 Dislike
+                          👎
                         </button>
                       </div>
                     </div>
@@ -254,7 +288,7 @@ const Center = ({ search }) => {
     </div>
   );
 
-  return viewMode === "card" ? cardView : tableView;
+  return (viewMode === "card" || isMobile) ? cardView : tableView;
 };
 
 export default Center;

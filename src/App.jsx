@@ -49,9 +49,10 @@ const App = () => {
        
         <div
           className={`
-            mt-3 p-3 sm:p-4 md:p-6 transition-all duration-300
+            mt-2 sm:mt-3 p-2 sm:p-3 md:p-4 lg:p-6 transition-all duration-300
             md:ml-60
             ${chatOpen ? "mr-0 md:mr-80" : "mr-0"}
+            w-full overflow-x-hidden
           `}
         >
           <Routes>
