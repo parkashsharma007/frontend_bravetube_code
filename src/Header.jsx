@@ -10,7 +10,7 @@ const Header = ({ setSearch, setSidebarOpen }) => {
   const viewMode = useSelector((state) => state.viewMode.mode);
 
   return (
-    <header className="flex items-center justify-between px-2 sm:px-4 py-2 bg-white border-b border-gray-200 sticky top-0 z-20">
+    <header className="flex items-center justify-between px-2 sm:px-4 py-2 bg-white border-b border-gray-200 sticky top-0 z-20 w-80%">
       <div className="flex items-center gap-2 sm:gap-3">
         <button
           onClick={() => setSidebarOpen && setSidebarOpen(prev => !prev)}
