@@ -25,14 +25,19 @@ const ChatData = ({ chatOpen, setChatOpen }) => {
     <>
     
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50
+        className={`fixed top-0 right-0 h-full w-full sm:w-80 bg-white shadow-2xl z-50
         flex flex-col transition-transform duration-300
         ${chatOpen ? "translate-x-0" : "translate-x-full"}
       `}
       >
-        <div className="flex justify-between items-center p-4 bg-blue-600 text-white">
-          <h2 className="font-semibold">AI Assistant</h2>
-          <button onClick={() => setChatOpen(false)}>❌</button>
+        <div className="flex justify-between items-center p-3 sm:p-4 bg-blue-600 text-white">
+          <h2 className="font-semibold text-sm sm:text-base">AI Assistant</h2>
+          <button 
+            onClick={() => setChatOpen(false)}
+            className="p-1 sm:p-2 hover:bg-blue-700 rounded-full transition-colors"
+          >
+            ❌
+          </button>
         </div>
 
         
@@ -85,13 +90,15 @@ const ChatData = ({ chatOpen, setChatOpen }) => {
       </div>
 
     
-      <button
-        onClick={() => setChatOpen(true)}
-        className="fixed bottom-6 right-6 bg-blue-600 text-white px-5 py-3 
-                   rounded-full shadow-xl hover:bg-blue-700 transition-all z-50"
-      >
-        💬 Chat
-      </button>
+      {!chatOpen && (
+        <button
+          onClick={() => setChatOpen(true)}
+          className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-blue-600 text-white px-4 sm:px-5 py-2 sm:py-3 
+                     rounded-full shadow-xl hover:bg-blue-700 transition-all z-50 text-sm sm:text-base"
+        >
+          💬 Chat
+        </button>
+      )}
     </>
   );
 };

@@ -30,7 +30,7 @@ import DislikedVideos from "./components/DislikedVideos";
 
 const App = () => {
   const [search, setSearch] = useState("");
-  const [chatOpen, setChatOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
